@@ -45,6 +45,28 @@ void setup() {
   // initialize serial:
   Serial.begin(9600);
   Serial1.begin(9600);
+
+  pinMode(er,OUTPUT);
+  pinMode(frontRightIn1, OUTPUT);
+  pinMode(frontRightIn2, OUTPUT);
+  pinMode(backRightIn1, OUTPUT);
+  pinMode(backRightIn2, OUTPUT);
+  pinMode(frontLeftIn1, OUTPUT);
+  pinMode(frontLeftIn2, OUTPUT);
+  pinMode(backLeftIn1, OUTPUT);
+  pinMode(backLeftIn2, OUTPUT);
+
+  digitalWrite(er,HIGH);
+  digitalWrite(frontLeftIn1,LOW);
+  digitalWrite(frontLeftIn2,LOW);
+  digitalWrite(frontRightIn1,LOW);
+  digitalWrite(frontRightIn2,LOW);
+  digitalWrite(backLeftIn1,LOW);
+  digitalWrite(backLeftIn2,LOW);
+  digitalWrite(backRightIn1,LOW);
+  digitalWrite(backRightIn2,LOW);
+
+
   // reserve 200 bytes for the inputString:
   inputString.reserve(200);
 }
@@ -54,24 +76,25 @@ void loop() {
   if (stringComplete) {
     Serial.println(inputString);
 
-    if(inputString=="FLD"){
-      digitalWrite(frontLeftIn1,HIGH);
-      digitalWrite(frontLeftIn2,LOW);
+    if(inputString=="FLD\n"){
+      Serial.println("a");
+      digitalWrite(frontLeftIn2,HIGH);
+      digitalWrite(frontLeftIn1,LOW);
       analogWrite(frontLeftSpeed,255);
 
-      digitalWrite(frontRightIn1,HIGH);
-      digitalWrite(frontRightIn2,LOW);
+      digitalWrite(frontRightIn2,HIGH);
+      digitalWrite(frontRightIn1,LOW);
       analogWrite(frontRightSpeed,255);
 
       digitalWrite(backLeftIn1,HIGH);
       digitalWrite(backLeftIn2,LOW);
       analogWrite(backLeftSpeed,255);
 
-      digitalWrite(backRightIn1,HIGH);
-      digitalWrite(backRightIn2,LOW);
+      digitalWrite(backRightIn2,HIGH);
+      digitalWrite(backRightIn1,LOW);
       analogWrite(backRightSpeed,255);
     }
-    else if(inputString=="FLU"){
+    else if(inputString=="FLU\n"){
       digitalWrite(frontLeftIn1,LOW);
       digitalWrite(frontLeftIn2,LOW);
       analogWrite(frontLeftSpeed,0);
