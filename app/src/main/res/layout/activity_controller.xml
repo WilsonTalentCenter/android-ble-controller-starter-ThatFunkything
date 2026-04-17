@@ -6,8 +6,78 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#aaaaaa"
+    android:backgroundTintMode="add"
     tools:context=".Controller"
     >
+
+    <com.punchthrough.blestarterappandroid.JoystickView
+        android:id="@+id/joystick_right"
+        android:layout_width="312dp"
+        android:layout_height="295dp"
+        android:layout_margin="8dp"
+        android:layout_marginTop="212dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.552"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_led_on"
+        app:layout_constraintVertical_bias="0.886"
+        />
+
+    <Button
+        android:id="@+id/button_led_forwardR"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="Right Wheels Forward"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.438"
+        />
+
+    <Button
+        android:id="@+id/button_led_backwardR"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="Right Wheels Backward"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.74"
+        />
+
+    <Button
+        android:id="@+id/button_led_forwardL"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="Left Wheels Forward"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.141"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.44"
+        />
+
+    <Button
+        android:id="@+id/button_led_backwardL"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="Left Wheels Backward"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.141"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.741"
+        />
 
     <Button
         android:id="@+id/button_led_on"
@@ -16,11 +86,13 @@
         android:text="on"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.013"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.021"
         />
-		
-	<com.punchthrough.blestarterappandroid.JoystickView
+
+    <com.punchthrough.blestarterappandroid.JoystickView
         android:id="@+id/joystick_custom"
         android:layout_width="312dp"
         android:layout_height="295dp"
@@ -29,11 +101,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.896"
+        app:layout_constraintHorizontal_bias="0.872"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/button_led_on"
-        app:layout_constraintVertical_bias="0.686"
+        app:layout_constraintVertical_bias="0.89"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
