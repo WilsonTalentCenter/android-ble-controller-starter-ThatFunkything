@@ -21,7 +21,7 @@
 String inputString = "";      // a String to hold incoming data
 bool stringComplete = false;  // whether the string is complete
 
-const int frontLeftIn1 = 36;
+const int frontLeftIn1 = 35;
 const int frontLeftIn2 = 39;
 const int frontLeftSpeed = 6; //enable
 
@@ -59,12 +59,20 @@ void setup() {
   digitalWrite(er,HIGH);
   digitalWrite(frontLeftIn1,LOW);
   digitalWrite(frontLeftIn2,LOW);
+  analogWrite(frontLeftSpeed,0);
+
   digitalWrite(frontRightIn1,LOW);
   digitalWrite(frontRightIn2,LOW);
+  analogWrite(frontRightSpeed,0);
+
   digitalWrite(backLeftIn1,LOW);
   digitalWrite(backLeftIn2,LOW);
+  analogWrite(backLeftSpeed,0);
+
   digitalWrite(backRightIn1,LOW);
   digitalWrite(backRightIn2,LOW);
+  analogWrite(backRightSpeed,0);
+
 
 
   // reserve 200 bytes for the inputString:
@@ -77,9 +85,47 @@ void loop() {
     Serial.println(inputString);
 
     if(inputString=="FLD\n"){
-      Serial.println("a");
+      
+      //DO NOT MESS WITH FRONT LEFT
       digitalWrite(frontLeftIn2,HIGH);
       digitalWrite(frontLeftIn1,LOW);
+      analogWrite(frontLeftSpeed,255);
+
+      digitalWrite(frontRightIn1,HIGH);
+      digitalWrite(frontRightIn2,LOW);
+      analogWrite(frontRightSpeed,255);
+
+      digitalWrite(backLeftIn2,HIGH);
+      digitalWrite(backLeftIn1,LOW);
+      analogWrite(backLeftSpeed,255);
+
+      digitalWrite(backRightIn1,HIGH);
+      digitalWrite(backRightIn2,LOW);
+      analogWrite(backRightSpeed,255);
+    }
+    else if(inputString=="FLU\n"){
+      digitalWrite(frontLeftIn1,LOW);
+      digitalWrite(frontLeftIn2,LOW);
+      analogWrite(frontLeftSpeed,0);
+
+      digitalWrite(frontRightIn1,LOW);
+      digitalWrite(frontRightIn2,LOW);
+      analogWrite(frontRightSpeed,0);
+
+      digitalWrite(backLeftIn1,LOW);
+      digitalWrite(backLeftIn2,LOW);
+      analogWrite(backLeftSpeed,0);
+
+      digitalWrite(backRightIn1,LOW);
+      digitalWrite(backRightIn2,LOW);
+      analogWrite(backRightSpeed,0);
+    }
+
+    if(inputString=="1\n"){
+      
+      //DO NOT MESS WITH FRONT LEFT
+      digitalWrite(frontLeftIn1,HIGH);
+      digitalWrite(frontLeftIn2,LOW);
       analogWrite(frontLeftSpeed,255);
 
       digitalWrite(frontRightIn2,HIGH);
@@ -94,7 +140,7 @@ void loop() {
       digitalWrite(backRightIn1,LOW);
       analogWrite(backRightSpeed,255);
     }
-    else if(inputString=="FLU\n"){
+    else if(inputString=="0\n"){
       digitalWrite(frontLeftIn1,LOW);
       digitalWrite(frontLeftIn2,LOW);
       analogWrite(frontLeftSpeed,0);
