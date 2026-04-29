@@ -21,18 +21,24 @@
 String inputString = "";      // a String to hold incoming data
 bool stringComplete = false;  // whether the string is complete
 
+const int frontLeft[3] = {35, 39, 6};
 const int frontLeftIn1 = 35;
 const int frontLeftIn2 = 39;
 const int frontLeftSpeed = 6; //enable
 
+//backward
+const int frontRight[3] = {34, 38, 12};
 const int frontRightIn1 = 34;
 const int frontRightIn2 = 38;
 const int frontRightSpeed = 12; //enable
 
+const int backLeft[3] = {37, 41, 7};
 const int backLeftIn1 = 37;
 const int backLeftIn2 = 41;
 const int backLeftSpeed = 7; //enable
 
+//backward
+const int backRight[3] = {36, 40, 13};
 const int backRightIn1 = 36;
 const int backRightIn2 = 40;
 const int backRightSpeed = 13; //enable
@@ -84,13 +90,15 @@ void loop() {
   if (stringComplete) {
     Serial.println(inputString);
 
+//buttons
+//forward
     if(inputString=="FLD\n"){
       
-      //DO NOT MESS WITH FRONT LEFT
+      /*
       digitalWrite(frontLeftIn2,HIGH);
       digitalWrite(frontLeftIn1,LOW);
       analogWrite(frontLeftSpeed,255);
-
+      
       digitalWrite(frontRightIn1,HIGH);
       digitalWrite(frontRightIn2,LOW);
       analogWrite(frontRightSpeed,255);
@@ -102,8 +110,17 @@ void loop() {
       digitalWrite(backRightIn1,HIGH);
       digitalWrite(backRightIn2,LOW);
       analogWrite(backRightSpeed,255);
+      */
+
+      moveWheel(frontLeft, 255, true, true);
+      moveWheel(backLeft, 255, true, true);
+      moveWheel(frontRight, 255, true, false);
+      moveWheel(backRight, 255, true, false);
+
+
     }
     else if(inputString=="FLU\n"){
+      /*
       digitalWrite(frontLeftIn1,LOW);
       digitalWrite(frontLeftIn2,LOW);
       analogWrite(frontLeftSpeed,0);
@@ -119,11 +136,18 @@ void loop() {
       digitalWrite(backRightIn1,LOW);
       digitalWrite(backRightIn2,LOW);
       analogWrite(backRightSpeed,0);
+      */
+
+      moveWheel(frontLeft, 0, true, true);
+      moveWheel(backLeft, 0, true, true);
+      moveWheel(frontRight, 0, true, false);
+      moveWheel(backRight, 0, true, false);
+
     }
 
+//backward
     if(inputString=="1\n"){
-      
-      //DO NOT MESS WITH FRONT LEFT
+      /*
       digitalWrite(frontLeftIn1,HIGH);
       digitalWrite(frontLeftIn2,LOW);
       analogWrite(frontLeftSpeed,255);
@@ -139,8 +163,15 @@ void loop() {
       digitalWrite(backRightIn2,HIGH);
       digitalWrite(backRightIn1,LOW);
       analogWrite(backRightSpeed,255);
+      */
+
+      moveWheel(frontLeft, 255, true, false);
+      moveWheel(backLeft, 255, true, false);
+      moveWheel(frontRight, 255, true, true);
+      moveWheel(backRight, 255, true, true);
     }
     else if(inputString=="0\n"){
+      /*
       digitalWrite(frontLeftIn1,LOW);
       digitalWrite(frontLeftIn2,LOW);
       analogWrite(frontLeftSpeed,0);
@@ -156,11 +187,18 @@ void loop() {
       digitalWrite(backRightIn1,LOW);
       digitalWrite(backRightIn2,LOW);
       analogWrite(backRightSpeed,0);
+      */
+
+      moveWheel(frontLeft, 0, true, true);
+      moveWheel(backLeft, 0, true, true);
+      moveWheel(frontRight, 0, true, false);
+      moveWheel(backRight, 0, true, false);
     }
 
+//joystick
     if(inputString.startsWith("LJ")){
       //for left joystick
-
+      
 
       int x;
       int y;
@@ -171,6 +209,31 @@ void loop() {
     stringComplete = false;
   }
 }
+
+
+//assumes speed is 0-255
+void moveWheel(int motor[], int speed, bool forward, bool isBackwards){
+
+  //these two motors spin backwards (I think)
+  if(speed == 0){
+    digitalWrite(motor[0],LOW);
+    digitalWrite(motor[1],LOW);
+    analogWrite(motor[2],speed);
+  }
+  else{
+  if(isBackwards){
+    digitalWrite(motor[0],(forward ? LOW : HIGH));
+    digitalWrite(motor[1],(forward ? HIGH : LOW));
+    analogWrite(motor[2],speed);
+  }
+  else{
+    digitalWrite(motor[0],(forward ? HIGH : LOW));
+    digitalWrite(motor[1],(forward ? LOW : HIGH));
+    analogWrite(motor[2],speed);
+  }
+  }
+}
+
 
 /*
   SerialEvent occurs whenever a new data comes in the hardware serial RX. This
