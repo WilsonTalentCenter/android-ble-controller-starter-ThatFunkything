@@ -93,51 +93,13 @@ void loop() {
 //buttons
 //forward
     if(inputString=="FLD\n"){
-      
-      /*
-      digitalWrite(frontLeftIn2,HIGH);
-      digitalWrite(frontLeftIn1,LOW);
-      analogWrite(frontLeftSpeed,255);
-      
-      digitalWrite(frontRightIn1,HIGH);
-      digitalWrite(frontRightIn2,LOW);
-      analogWrite(frontRightSpeed,255);
-
-      digitalWrite(backLeftIn2,HIGH);
-      digitalWrite(backLeftIn1,LOW);
-      analogWrite(backLeftSpeed,255);
-
-      digitalWrite(backRightIn1,HIGH);
-      digitalWrite(backRightIn2,LOW);
-      analogWrite(backRightSpeed,255);
-      */
-
       moveWheel(frontLeft, 255, true, true);
       moveWheel(backLeft, 255, true, true);
       moveWheel(frontRight, 255, true, false);
       moveWheel(backRight, 255, true, false);
 
-
     }
     else if(inputString=="FLU\n"){
-      /*
-      digitalWrite(frontLeftIn1,LOW);
-      digitalWrite(frontLeftIn2,LOW);
-      analogWrite(frontLeftSpeed,0);
-
-      digitalWrite(frontRightIn1,LOW);
-      digitalWrite(frontRightIn2,LOW);
-      analogWrite(frontRightSpeed,0);
-
-      digitalWrite(backLeftIn1,LOW);
-      digitalWrite(backLeftIn2,LOW);
-      analogWrite(backLeftSpeed,0);
-
-      digitalWrite(backRightIn1,LOW);
-      digitalWrite(backRightIn2,LOW);
-      analogWrite(backRightSpeed,0);
-      */
-
       moveWheel(frontLeft, 0, true, true);
       moveWheel(backLeft, 0, true, true);
       moveWheel(frontRight, 0, true, false);
@@ -147,62 +109,75 @@ void loop() {
 
 //backward
     if(inputString=="1\n"){
-      /*
-      digitalWrite(frontLeftIn1,HIGH);
-      digitalWrite(frontLeftIn2,LOW);
-      analogWrite(frontLeftSpeed,255);
-
-      digitalWrite(frontRightIn2,HIGH);
-      digitalWrite(frontRightIn1,LOW);
-      analogWrite(frontRightSpeed,255);
-
-      digitalWrite(backLeftIn1,HIGH);
-      digitalWrite(backLeftIn2,LOW);
-      analogWrite(backLeftSpeed,255);
-
-      digitalWrite(backRightIn2,HIGH);
-      digitalWrite(backRightIn1,LOW);
-      analogWrite(backRightSpeed,255);
-      */
-
       moveWheel(frontLeft, 255, true, false);
       moveWheel(backLeft, 255, true, false);
       moveWheel(frontRight, 255, true, true);
       moveWheel(backRight, 255, true, true);
+
     }
     else if(inputString=="0\n"){
-      /*
-      digitalWrite(frontLeftIn1,LOW);
-      digitalWrite(frontLeftIn2,LOW);
-      analogWrite(frontLeftSpeed,0);
-
-      digitalWrite(frontRightIn1,LOW);
-      digitalWrite(frontRightIn2,LOW);
-      analogWrite(frontRightSpeed,0);
-
-      digitalWrite(backLeftIn1,LOW);
-      digitalWrite(backLeftIn2,LOW);
-      analogWrite(backLeftSpeed,0);
-
-      digitalWrite(backRightIn1,LOW);
-      digitalWrite(backRightIn2,LOW);
-      analogWrite(backRightSpeed,0);
-      */
-
       moveWheel(frontLeft, 0, true, true);
       moveWheel(backLeft, 0, true, true);
       moveWheel(frontRight, 0, true, false);
       moveWheel(backRight, 0, true, false);
+
     }
 
 //joystick
     if(inputString.startsWith("LJ")){
       //for left joystick
+      //300 is a placeholder to check if they have been given a new number
+      int x = 300;
+      int y = 300;
+
+      String del = ",";
+      int pos = inputString.indexOf(",");
+
+      inputString.remove(0, pos);
+      
+      int stringStart = 0;
+      for(int i = 0; i < inputString.length(); i++){
+        if (inputString.charAt(i) == ","){
+          int end = i;
+
+          if (x == 300){
+            x = atoi(inputString.substring(stringStart, end).c_str());
+            stringStart = i + 1;
+            
+          }
+          else if (y == 300){
+            y = atoi(inputString.substring(stringStart, end).c_str());
+          }
+        }
+      }
       
 
-      int x;
-      int y;
+      //UNFINISHED
+      /* make the robot move sideways depending on what direction the joystick is moved & make the wheels stop */
+      x *= 2;
+      y *= 2;
+      boolean forwards = true;
+      boolean right = true;
+      if (x < 0){
+        x *= -1;
+        right = false;
+      }
+      if (y < 0){
+        x *= -1;
+        forwards = false;
+      }
+      moveWheel(frontLeft, y, forwards, false);
+      moveWheel(backLeft, y, forwards, false);
+      moveWheel(frontRight, y, forwards, true);
+      moveWheel(backRight, y, forwards, true);
 
+    }
+    else{
+      //fix this, it probably doesn't stop the wheels correctly
+      moveWheel(frontLeft, 0, true, false);
+      moveWheel(backLeft, 0, true, false);
+      moveWheel(frontRight, 0, true, true);
+      moveWheel(backRight, 0, true, true);
     }
     // clear the string:
     inputString = "";
@@ -214,7 +189,6 @@ void loop() {
 //assumes speed is 0-255
 void moveWheel(int motor[], int speed, bool forward, bool isBackwards){
 
-  //these two motors spin backwards (I think)
   if(speed == 0){
     digitalWrite(motor[0],LOW);
     digitalWrite(motor[1],LOW);
