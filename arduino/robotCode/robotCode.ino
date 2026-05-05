@@ -89,8 +89,8 @@ void loop() {
   // print the string when a newline arrives:
   if (stringComplete) {
 
-//buttons
-//forward
+  //buttons
+  //forward
     if(inputString=="FLD\n"){
       moveWheel(frontLeft, 255, true, true);
       moveWheel(backLeft, 255, true, true);
@@ -106,7 +106,7 @@ void loop() {
 
     }
 
-//backward
+  //backward
     if(inputString=="1\n"){
       moveWheel(frontLeft, 255, true, false);
       moveWheel(backLeft, 255, true, false);
@@ -122,7 +122,7 @@ void loop() {
 
     }
 
-//joystick
+  //joystick
 
     boolean moving = false;
     if(inputString.startsWith("LJ")){
@@ -139,40 +139,26 @@ void loop() {
 
       for(int i = 0; i < inputString.length(); i++){
         if (inputString.charAt(i) == ','){
-          int end = i;
 
           if (xSet==false){
-            x = atoi(inputString.substring(stringStart, end).c_str());
-            // Serial.print(stringStart);
-            // Serial.print(",,");
-            // Serial.print(end);
-            // Serial.print(",,");
+            x = atoi(inputString.substring(stringStart, i).c_str());
 
             stringStart = i + 1;
             y = atoi(inputString.substring(stringStart).c_str());
           }
-        //   else {
-        //     y = atoi(inputString.substring(stringStart, end).c_str());
-        //      Serial.print(stringStart);
-        //     Serial.print(",");
-        //     Serial.println(end);
-        //   }
         }
-        
-
-
       }
+
+
       Serial.print("x:");
       Serial.print(x);
       Serial.print(" y:");
       Serial.println(y);
 
-      //cant go full speed :(
-      // x *= 2;
-      // y *= 2;
-      
-      boolean forwards = true;
-      boolean right = true;
+      bool forwards = true;
+      bool right = true;
+      bool strafe = false;
+      bool turn = false;
 
       if (x < 0){
         x *= -1;
@@ -188,19 +174,53 @@ void loop() {
       }
       x*=2;
 
-      moveWheel(frontLeft, y + x, forwards, false);
-      moveWheel(backLeft, y + x, forwards, false);
-      moveWheel(frontRight, y - x, forwards, true);
-      moveWheel(backRight, y - x, forwards, true);
-      Serial.print(y+x);
-      Serial.print(",");
-      Serial.println(y-x);
+      //f = front, b = back, l = left, r = right
+      int fLSpeed = 0;
+      int bLSpeed = 0;
+      int fRSpeed = 0;
+      int bRSpeed = 0;
+      //direction (forward(true) or backward(false))
+      bool fLDir = true;
+      bool bLDir = true;
+      bool fRDir = true;
+      bool bRDir = true;
+
+      if (true){
+        fLSpeed = y;
+        bLSpeed = y;
+        fRSpeed = y;
+        bRSpeed = y;
+
+        if (forwards == false){
+          fLDir = false;
+          bLDir = false;
+          fRDir = false;
+          bRDir = false;
+        }
+
+      }
+      else{
+        if (right == true){
+          fRDir = false;
+          bRDir = false;
+        }
+        else{
+          fLDir = false;
+          bLDir = false;
+        }
+      }
+
+      moveWheel(frontLeft, fLSpeed, fLDir, false);
+      moveWheel(backLeft, bLSpeed, bLDir, false);
+      moveWheel(frontRight, fRSpeed, fRDir, true);
+      moveWheel(backRight, bRSpeed, bRDir, true);
+      
     }
     // clear the string:
     inputString = "";
     stringComplete = false;
   }
-}
+  }
 
 
 //assumes speed is 0-255
@@ -211,19 +231,18 @@ void moveWheel(int motor[], int speed, bool forward, bool isBackwards){
     digitalWrite(motor[1],LOW);
     analogWrite(motor[2],speed);
   }
-  else{
-  if(isBackwards){
-    digitalWrite(motor[0],(forward ? LOW : HIGH));
-    digitalWrite(motor[1],(forward ? HIGH : LOW));
-    analogWrite(motor[2],speed);
-  }
+  else if(isBackwards){
+      digitalWrite(motor[0],(forward ? LOW : HIGH));
+      digitalWrite(motor[1],(forward ? HIGH : LOW));
+      analogWrite(motor[2],speed);
+    }
   else{
     digitalWrite(motor[0],(forward ? HIGH : LOW));
     digitalWrite(motor[1],(forward ? LOW : HIGH));
     analogWrite(motor[2],speed);
   }
-  }
 }
+
 
 
 /*
