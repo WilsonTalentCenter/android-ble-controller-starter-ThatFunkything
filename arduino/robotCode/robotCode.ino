@@ -88,7 +88,6 @@ void setup() {
 void loop() {
   // print the string when a newline arrives:
   if (stringComplete) {
-    Serial.println(inputString);
 
 //buttons
 //forward
@@ -124,60 +123,78 @@ void loop() {
     }
 
 //joystick
+
+    boolean moving = false;
     if(inputString.startsWith("LJ")){
       //for left joystick
       //300 is a placeholder to check if they have been given a new number
-      int x = 300;
-      int y = 300;
-
+      int x=0;
+      int y=0;
       String del = ",";
       int pos = inputString.indexOf(",");
 
-      inputString.remove(0, pos);
-      
+      inputString.remove(0, pos+1);
+      bool xSet = false;
       int stringStart = 0;
+
       for(int i = 0; i < inputString.length(); i++){
-        if (inputString.charAt(i) == ","){
+        if (inputString.charAt(i) == ','){
           int end = i;
 
-          if (x == 300){
+          if (xSet==false){
             x = atoi(inputString.substring(stringStart, end).c_str());
-            stringStart = i + 1;
-            
-          }
-          else if (y == 300){
-            y = atoi(inputString.substring(stringStart, end).c_str());
-          }
-        }
-      }
-      
+            // Serial.print(stringStart);
+            // Serial.print(",,");
+            // Serial.print(end);
+            // Serial.print(",,");
 
-      //UNFINISHED
-      /* make the robot move sideways depending on what direction the joystick is moved & make the wheels stop */
-      x *= 2;
-      y *= 2;
+            stringStart = i + 1;
+            y = atoi(inputString.substring(stringStart).c_str());
+          }
+        //   else {
+        //     y = atoi(inputString.substring(stringStart, end).c_str());
+        //      Serial.print(stringStart);
+        //     Serial.print(",");
+        //     Serial.println(end);
+        //   }
+        }
+        
+
+
+      }
+      Serial.print("x:");
+      Serial.print(x);
+      Serial.print(" y:");
+      Serial.println(y);
+
+      //cant go full speed :(
+      // x *= 2;
+      // y *= 2;
+      
       boolean forwards = true;
       boolean right = true;
+
       if (x < 0){
         x *= -1;
         right = false;
       }
       if (y < 0){
-        x *= -1;
+        y *= -1;
         forwards = false;
       }
-      moveWheel(frontLeft, y, forwards, false);
-      moveWheel(backLeft, y, forwards, false);
-      moveWheel(frontRight, y, forwards, true);
-      moveWheel(backRight, y, forwards, true);
 
-    }
-    else{
-      //fix this, it probably doesn't stop the wheels correctly
-      moveWheel(frontLeft, 0, true, false);
-      moveWheel(backLeft, 0, true, false);
-      moveWheel(frontRight, 0, true, true);
-      moveWheel(backRight, 0, true, true);
+      if (x < 15){
+        x = 0;
+      }
+      x*=2;
+
+      moveWheel(frontLeft, y + x, forwards, false);
+      moveWheel(backLeft, y + x, forwards, false);
+      moveWheel(frontRight, y - x, forwards, true);
+      moveWheel(backRight, y - x, forwards, true);
+      Serial.print(y+x);
+      Serial.print(",");
+      Serial.println(y-x);
     }
     // clear the string:
     inputString = "";
