@@ -123,7 +123,6 @@ void loop() {
     }
 
   //joystick
-
     boolean moving = false;
     if(inputString.startsWith("LJ")){
       //for left joystick
@@ -134,26 +133,13 @@ void loop() {
       int pos = inputString.indexOf(",");
 
       inputString.remove(0, pos+1);
-      bool xSet = false;
-      int stringStart = 0;
+      x = getValueFromString(1, inputString);
+      y = getValueFromString(2, inputString);
 
-      for(int i = 0; i < inputString.length(); i++){
-        if (inputString.charAt(i) == ','){
-
-          if (xSet==false){
-            x = atoi(inputString.substring(stringStart, i).c_str());
-
-            stringStart = i + 1;
-            y = atoi(inputString.substring(stringStart).c_str());
-          }
-        }
-      }
-
-
-      Serial.print("x:");
-      Serial.print(x);
-      Serial.print(" y:");
-      Serial.println(y);
+      // Serial.print("x:");
+      // Serial.print(x);
+      // Serial.print(" y:");
+      // Serial.println(y);
 
       bool forwards = true;
       bool right = true;
@@ -169,8 +155,8 @@ void loop() {
         forwards = false;
       }
 
-      if (x < 15){
-        x = 0;
+      if (x > 15){
+        strafe = true;
       }
       x*=2;
 
@@ -185,29 +171,29 @@ void loop() {
       bool fRDir = true;
       bool bRDir = true;
 
-      if (true){
+      if (strafe == false){
         fLSpeed = y;
         bLSpeed = y;
         fRSpeed = y;
         bRSpeed = y;
 
-        if (forwards == false){
-          fLDir = false;
-          bLDir = false;
-          fRDir = false;
-          bRDir = false;
-        }
-
       }
       else{
         if (right == true){
-          fRDir = false;
-          bRDir = false;
+          bRSpeed = y;
+          bLSpeed = y;
         }
         else{
-          fLDir = false;
-          bLDir = false;
+          fLSpeed = y;
+          fRSpeed = y;
         }
+        
+      }
+      if (forwards == false){
+        fLDir = false;
+        bLDir = false;
+        fRDir = false;
+        bRDir = false;
       }
 
       moveWheel(frontLeft, fLSpeed, fLDir, false);
@@ -216,12 +202,57 @@ void loop() {
       moveWheel(backRight, bRSpeed, bRDir, true);
       
     }
+    else if (inputString.startsWith("RJ")){
+      //untested
+      int rotation = 0;
+      int pos = inputString.indexOf(",");
+
+      inputString.remove(0, pos+1);
+      rotation = getValueFromString(1, inputString);
+      bool right = rotation > 0;
+      bool left = right == false;
+
+      if (right == true){
+       
+      }
+
+       moveWheel(frontLeft, rotation, right, false);
+        moveWheel(backLeft, rotation, right, false);
+        moveWheel(frontRight, rotation, left, false);
+        moveWheel(backRight, rotation, left, false);
+
+    }
     // clear the string:
     inputString = "";
     stringComplete = false;
   }
   }
 
+int getValueFromString(int number, String string){
+  int a;
+  int b;
+  bool xSet = false;
+  int stringStart = 0;
+
+  for(int i = 0; i < string.length(); i++){
+    if (string.charAt(i) == ','){
+      if (xSet==false){
+        a = atoi(inputString.substring(stringStart, i).c_str());
+
+        stringStart = i + 1;
+        b = atoi(inputString.substring(stringStart).c_str());
+      }
+    }
+  }
+
+  if (number == 1){
+    return a;
+  }
+  else{
+    return b;
+  }
+
+}
 
 //assumes speed is 0-255
 void moveWheel(int motor[], int speed, bool forward, bool isBackwards){
