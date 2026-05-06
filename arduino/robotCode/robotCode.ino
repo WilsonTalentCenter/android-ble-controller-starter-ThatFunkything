@@ -91,14 +91,14 @@ void loop() {
 
   //buttons
   //forward
-    if(inputString=="FLD\n"){
+    if(inputString=="FD\n"){
       moveWheel(frontLeft, 255, true, true);
       moveWheel(backLeft, 255, true, true);
       moveWheel(frontRight, 255, true, false);
       moveWheel(backRight, 255, true, false);
 
     }
-    else if(inputString=="FLU\n"){
+    else if(inputString=="FU\n"){
       moveWheel(frontLeft, 0, true, true);
       moveWheel(backLeft, 0, true, true);
       moveWheel(frontRight, 0, true, false);
@@ -107,19 +107,47 @@ void loop() {
     }
 
   //backward
-    if(inputString=="1\n"){
+    if(inputString=="BD\n"){
       moveWheel(frontLeft, 255, true, false);
       moveWheel(backLeft, 255, true, false);
       moveWheel(frontRight, 255, true, true);
       moveWheel(backRight, 255, true, true);
 
     }
-    else if(inputString=="0\n"){
+    else if(inputString=="BU\n"){
       moveWheel(frontLeft, 0, true, true);
       moveWheel(backLeft, 0, true, true);
       moveWheel(frontRight, 0, true, false);
       moveWheel(backRight, 0, true, false);
 
+    }
+
+  //left turn
+    if (inputString=="LD\n"){
+      moveWheel(frontLeft, 255, false, false);
+      moveWheel(backLeft, 255, false, false);
+      moveWheel(frontRight, 255, true, true);
+      moveWheel(backRight, 255, true, true);
+    }
+    else if (inputString=="LU\n"){
+      moveWheel(frontLeft, 0, true, true);
+      moveWheel(backLeft, 0, true, true);
+      moveWheel(frontRight, 0, true, false);
+      moveWheel(backRight, 0, true, false);
+    }
+
+  //left turn
+    if (inputString=="RD\n"){
+      moveWheel(frontLeft, 255, true, false);
+      moveWheel(backLeft, 255, true, false);
+      moveWheel(frontRight, 255, false, true);
+      moveWheel(backRight, 255, false, true);
+    }
+    else if (inputString=="RU\n"){
+      moveWheel(frontLeft, 0, true, true);
+      moveWheel(backLeft, 0, true, true);
+      moveWheel(frontRight, 0, true, false);
+      moveWheel(backRight, 0, true, false);
     }
 
   //joystick

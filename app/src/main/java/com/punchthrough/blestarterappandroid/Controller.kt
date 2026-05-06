@@ -31,44 +31,64 @@ class Controller : AppCompatActivity() {
        // val btnLedOn = findViewById<Button>(R.id.button_led_on)
 
         //EXAMPLE
-        val btnControl = findViewById<Button>(R.id.button_led_on)
-        btnControl.setOnTouchListener { view, event ->
+        val backwardBtn = findViewById<Button>(R.id.button_led_on)
+        backwardBtn.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
-                    sendToArduino("1")
+                    sendToArduino("BD")
                     true
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    sendToArduino("0")
+                    sendToArduino("BU")
                     true
                 }
                 else -> false
             }
         }
 
-        val leftForwardBtn = findViewById<Button>(R.id.button_led_forwardL)
-        leftForwardBtn.setOnTouchListener { view, event ->
+        val forwardBtn = findViewById<Button>(R.id.button_led_forwardL)
+        forwardBtn.setOnTouchListener { view, event ->
             when (event.action){
                 MotionEvent.ACTION_DOWN -> {
-                    sendToArduino("FLD")
+                    sendToArduino("FD")
                     true
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    sendToArduino("FLU")
+                    sendToArduino("FU")
                     true
                 }
                 else -> false
             }
         }
 
-        val joystickL = findViewById<JoystickView>(R.id.joystick_custom)
-        joystickL.onMoveListener = { angle, strength ->
-            sendJoystickPosition(angle, strength,"LJ")
+        val turnRightBtn = findViewById<Button>(R.id.Right)
+        turnRightBtn.setOnTouchListener { view, event ->
+            when (event.action){
+                MotionEvent.ACTION_DOWN -> {
+                    sendToArduino("RD")
+                    true
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    sendToArduino("RU")
+                    true
+                }
+                else -> false
+            }
         }
 
-        val joystickR = findViewById<JoystickView>(R.id.joystick_right)
-        joystickR.onMoveListener = { angle, strength ->
-            sendJoystickPosition(angle, strength,"RJ")
+        val turnLeftBtn = findViewById<Button>(R.id.Left)
+        turnLeftBtn.setOnTouchListener { view, event ->
+            when (event.action){
+                MotionEvent.ACTION_DOWN -> {
+                    sendToArduino("LD")
+                    true
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    sendToArduino("LU")
+                    true
+                }
+                else -> false
+            }
         }
 
     }
