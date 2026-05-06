@@ -203,24 +203,18 @@ void loop() {
       
     }
     else if (inputString.startsWith("RJ")){
-      //untested
+      //TURNING
       int rotation = 0;
       int pos = inputString.indexOf(",");
-
       inputString.remove(0, pos+1);
       rotation = getValueFromString(1, inputString);
       bool right = rotation > 0;
       bool left = right == false;
 
-      if (right == true){
-       
-      }
-
-       moveWheel(frontLeft, rotation, right, false);
-        moveWheel(backLeft, rotation, right, false);
-        moveWheel(frontRight, rotation, left, false);
-        moveWheel(backRight, rotation, left, false);
-
+      moveWheel(frontLeft, rotation, right, false);
+      moveWheel(backLeft, rotation, right, false);
+      moveWheel(frontRight, rotation, left, true);
+      moveWheel(backRight, rotation, left, true);
     }
     // clear the string:
     inputString = "";
@@ -273,8 +267,6 @@ void moveWheel(int motor[], int speed, bool forward, bool isBackwards){
     analogWrite(motor[2],speed);
   }
 }
-
-
 
 /*
   SerialEvent occurs whenever a new data comes in the hardware serial RX. This
